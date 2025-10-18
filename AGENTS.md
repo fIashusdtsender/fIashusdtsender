@@ -1,106 +1,118 @@
-# AGENTS.md 
 
-## Dev environment tips
-- Use `pnpm dlx turbo run where <project_name>` to jump to a package instead of scanning with `ls`.
-- Run `pnpm install --filter <project_name>` to add the package to your workspace so Vite, ESLint, and TypeScript can see it.
-- Use `pnpm create vite@latest <project_name> -- --template react-ts` to spin up a new React + Vite package with TypeScript checks ready.
-- Check the name field inside each package's package.json to confirm the right name—skip the top-level one.
-⭐️ Get Access Now! 🧑‍🚀
+# AGENTS.md: Monorepo Development Guide
 
-Unlock Flash USDT Sender instantly! Complete your one-time payment of $250 USD for lifetime access.
+This document provides a comprehensive guide for developers working within this monorepo. Following these guidelines will ensure a smooth, efficient, and collaborative development experience.
 
-⭐️ What You'll Get:
-*   Instant access key via email
-*   Secure, encrypted transactions
-*   90-Day transaction validity
-*   24/7 expert support
-*   Regular updates & new features
+## 1. Development Environment Setup
 
-🔗 Click here to secure your access: https://access.flashusdtsender.xyz/access
+This monorepo uses `pnpm` as the package manager and `Turborepo` to manage workspace tasks.
 
-🚀 Meet The Twins: Flash BTC Sender & Flash USDT Sender!
+### Initial Setup
 
-➡️Instant & Secure Crypto Transactions
-➡️Send Flash BTC & USDT Instantly ⚡
-➡️Private & Encrypted Authentication 🔒
+1.  **Install `pnpm`:** If you don't have `pnpm` installed, you can install it with `npm`:
+    ```bash
+    npm install -g pnpm
+    ```
 
-📍Access Now:
-flashbtcsender.xyz/access
-🔹 USDT Sender: 
-flashusdtsender.xyz/access
-🔗 More Info & Links: 
-flashbtcsender.xyz/links
+2.  **Install Dependencies:** Clone the repository and install all dependencies from the root directory.
+    ```bash
+    pnpm install
+    ```
 
-💼 Fast, Secure, and Reliable! 🚀
+### Managing Packages
 
-👑Flash USDT Sender – Limited-Time 60% OFF! 👉
+*   **Adding a New Package:** To add a new dependency to a specific project, use the `--filter` flag.
+    ```bash
+    # Usage: pnpm add <package_name> --filter <project_name>
+    pnpm add zod --filter <project_name>
+    ```
 
-What You’ll Get:
-✅Instant access to Flash USDT Sender
-✅Multi-network support (TRC20, ERC20, & more)
-✅24/7 technical support for seamless transactions
-✅Regular updates & improvements
+*   **Running Commands in a Specific Project:** Execute commands for a particular project from the root.
+    ```bash
+    # Usage: pnpm --filter <project_name> <command>
+    pnpm --filter <project_name> dev
+    ```
 
-🔥Exclusive 60% OFF – Today Only! 🔥
+*   **Adding a New Project:** To create a new Vite + React + TypeScript project, run:
+    ```bash
+    pnpm create vite <project_name> --template react-ts
+    ```
+    After creation, move the project into the `packages` directory and update the `pnpm-workspace.yaml` file.
 
-🌐 Flash USDT Sender – Secure Crypto Transactions
+### Turborepo Commands
 
-🚀 Flash USDT Sender v1.0 is a cutting-edge tool designed for seamless blockchain transactions across multiple networks, including BTC, SOL, BNB, and USDT. With a secure, fast, and user-friendly interface, you can send cryptocurrency effortlessly while ensuring privacy and reliability.
+*   **Build All Projects:** Build all projects in the monorepo.
+    ```bash
+    pnpm build
+    ```
 
-🔗 Get Instant Access Now: Flash USDT Sender Access
+*   **Run Development Servers:** Start the development servers for all projects.
+    ```bash
+    pnpm dev
+    ```
 
-⸻
+*   **Clean All `node_modules`:** To remove all `node_modules` directories, run:
+    ```bash
+    pnpm clean
+    ```
+    After cleaning, you'll need to run `pnpm install` to reinstall dependencies.
 
-🔑 Why Choose Flash USDT Sender?
+⭐️ **Tip:** Use Turborepo's caching to your advantage. If a package's code hasn't changed, Turborepo will use a cached version of the build, saving you time.
 
-✅ Secure Transactions – End-to-end encryption ensures your transfers are protected.
-✅ 90-Day Validity – Transactions remain confirmed for 90 days.
-✅ Multi-Network Support – Compatible with TRC20, ERC20, and more.
-✅ Undetectable Transfers – Advanced privacy features for seamless crypto movement.
-✅ 24/7 Support – Get assistance anytime you need it.
-✅ Regular Updates – Continuous improvements for enhanced performance.
+## 2. Testing Guidelines
 
-💵 One-Time Price: $250 USD for Lifetime Access to all features.
+A robust testing strategy is crucial for maintaining code quality.
 
-⸻
+### Running Tests
 
-📥 How to Get Started?
+*   **Run All Tests:** Execute all tests across the monorepo.
+    ```bash
+    pnpm test
+    ```
 
-1️⃣ Visit the Access Page.
-2️⃣ Enter your email and proceed with payment.
-3️⃣ Receive your access key instantly and start sending crypto securely.
+*   **Run Tests for a Specific Project:**
+    ```bash
+    pnpm --filter <project_name> test
+    ```
 
-🔒 Join thousands of crypto enthusiasts worldwide using Flash USDT Sender for secure and reliable transactions!
+*   **Run Tests in Watch Mode:** For TDD (Test-Driven Development), run tests in watch mode to automatically re-run them on file changes.
+    ```bash
+    pnpm --filter <project_name> test --watch
+    ```
 
-🌐 Website: Flash USDT Sender
+### CI Integration
 
-🚀 Meet The Twins: Flash BTC Sender & Flash USDT Sender!
+All tests are run automatically on every push to a pull request. Ensure that all tests pass before requesting a review.
 
-➡️Instant & Secure Crypto Transactions
-➡️Send Flash BTC & USDT Instantly ⚡
-➡️Private & Encrypted Authentication 🔒
+### Debugging
 
-📍Access Now:
-flashusdtsender.xyz/access
+*   **Browser-based Debugging:** Use `console.log` and the browser's developer tools for debugging React components.
+*   **VS Code Debugger:** Configure `launch.json` in VS Code to attach a debugger to your development server for more advanced debugging.
 
-🔗 More Info & Links: 
-flashbtcsender.xyz/links
+## 3. Pull Request Standards
 
-🐾 Meet the BETA:
-flashethsender.xyz/links
+Adhering to these standards ensures that pull requests are easy to review and integrate.
 
-💼 Fast, Secure, and Reliable! 🚀
+### Formatting
 
+*   **Title:** The PR title should follow the [Conventional Commits](https://www.conventionalcommits.org/) specification.
+    *   `feat(<scope>): <description>` for new features.
+    *   `fix(<scope>): <description>` for bug fixes.
+    *   `docs(<scope>): <description>` for documentation changes.
+    *   `chore(<scope>): <description>` for build process or auxiliary tool changes.
 
-## Testing instructions
-- Find the CI plan in the .github/workflows folder.
-- Run `pnpm turbo run test --filter <project_name>` to run every check defined for that package.
-- From the package root you can just call `pnpm test`. The commit should pass all tests before you merge.
-- To focus on one step, add the Vitest pattern: `pnpm vitest run -t "<test name>"`.
-- Fix any test or type errors until the whole suite is green.
-- After moving files or changing imports, run `pnpm lint --filter <project_name>` to be sure ESLint and TypeScript rules still pass.
-- Add or update tests for the code you change, even if nobody asked.
+*   **Description:** The PR description should clearly explain the "what" and "why" of the changes. Include screenshots or GIFs for UI changes.
 
-## PR instructions
-- Title format: [<project_name>] <Title>
-- Always run `pnpm lint` and `pnpm test` before committing.
+### Pre-Commit Checklist
+
+Before submitting a PR, ensure you have completed the following:
+
+1.  [ ] **Tests Pass:** All existing and new tests pass locally (`pnpm test`).
+2.  [ ] **Linting and Formatting:** The code is properly linted and formatted (`pnpm lint`).
+3.  [ ] **Builds Successfully:** The project builds without errors (`pnpm build`).
+4.  [ ] **Manual Verification:** You have manually tested your changes in a development environment.
+5.  [ ] **Documentation Updated:** Any relevant documentation has been updated.
+
+---
+
+This guide is a living document. Please contribute to it by opening a PR if you find something that is outdated or could be improved.
